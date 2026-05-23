@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIrbnb Cloud Dev Auth</title>
+    <style>
+      body { font-family: Inter, sans-serif; background:#0b1020; color:#fff; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+      .card { width:360px; background:#151c33; border-radius:16px; padding:24px; box-shadow:0 10px 30px #0008; }
+      button,input { width:100%; margin-top:10px; padding:10px; border-radius:10px; border:0; }
+      button { background:#4f7cff; color:#fff; font-weight:600; cursor:pointer; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>AIrbnb Dev Environment</h2>
+      <p>Login and launch Expo in the cloud terminal.</p>
+      <a href="/auth/github"><button>Continue with GitHub</button></a>
+      <form method="post" action="/demo-login">
+        <input name="username" placeholder="Demo username"/>
+        <button type="submit">Use Demo Login</button>
+      </form>
+    </div>
+  </body>
+</html>

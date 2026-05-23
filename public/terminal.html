@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud Terminal</title>
+    <style>
+      body { margin:0; background:#0f172a; color:#e2e8f0; font-family:monospace; }
+      header { padding:12px; background:#111827; display:flex; gap:8px; }
+      input,button { padding:8px; border-radius:6px; border:0; }
+      #log { white-space:pre-wrap; padding:16px; height:60vh; overflow:auto; border-top:1px solid #334155; }
+      #qr { max-width:260px; margin:16px; border-radius:8px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <input id="repo" placeholder="GitHub repo URL" value="https://github.com/expo/examples.git" style="flex:1"/>
+      <input id="branch" placeholder="branch" value="main" style="width:120px"/>
+      <button id="start">Start Expo</button>
+    </header>
+    <div id="log"></div>
+    <img id="qr" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const log = document.getElementById('log');
+      const qr = document.getElementById('qr');
+      const socket = io();
+
+      function write(msg){ log.textContent += msg; log.scrollTop = log.scrollHeight; }
+      socket.on('terminal:data', write);
+      socket.on('terminal:exit', write);
+      socket.on('expo:url', (data)=>{
+        write(`\nExpo URL: ${data.url}\n`);
+        qr.src = data.qrDataUrl;
+      });
+
+      document.getElementById('start').onclick = async () => {
+        const githubRepoUrl = document.getElementById('repo').value;
+        const branch = document.getElementById('branch').value;
+        await fetch('/api/start-expo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-socket-id': socket.id },
+          body: JSON.stringify({ githubRepoUrl, branch })
+        });
+      };
+    </script>
+  </body>
+</html>
